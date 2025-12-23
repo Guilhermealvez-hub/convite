@@ -77,7 +77,8 @@ font-weight:600;
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { getDatabase, ref, push, onValue, remove } from "firebase/database";
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyAg421ivUVYIWikXKmUchs8KFiuKHmRcE4",
@@ -99,7 +100,7 @@ const admin = document.getElementById("admin");
 const lista = document.getElementById("lista");
 
 
-window.confirmar = function(){
+window.confirm = function () {
   if(!nome.value || !resposta.value){
     alert("Preencha tudo");
     return;
@@ -112,8 +113,7 @@ window.confirmar = function(){
   resposta.value="";
   alert("Presença confirmada! 🎉");
 }
-
-window.abrirAdmin = function(){
+window.openAdmin = function () {
   if(senha.value === "gui15"){
     admin.style.display="block";
     onValue(convidadosRef, snap=>{
@@ -124,3 +124,7 @@ window.abrirAdmin = function(){
           ${c.val().nome} - ${c.val().resposta}
           <button onclick="apagar('${c.key}')">❌</button>
         `;
+window.apagar = function (id) {
+  const db = getDatabase();
+  remove(ref(db, "convidados/" + id));
+};
