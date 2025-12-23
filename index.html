@@ -90,6 +90,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const convidadosRef = ref(db, "convidados");
+  const nome = document.getElementById("nome");
+const resposta = document.getElementById("resposta");
+const senha = document.getElementById("senha");
+const admin = document.getElementById("admin");
+const lista = document.getElementById("lista");
+
 
 window.confirmar = function(){
   if(!nome.value || !resposta.value){
