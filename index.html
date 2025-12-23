@@ -90,10 +90,7 @@ const firebaseConfig = {
   appId: "1:967694475264:web:72078b694e3b0a1211f8e5"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-const convidadosRef = ref(db, "convidados");
-  const nome = document.getElementById("nome");
+const nome = document.getElementById("nome");
 const resposta = document.getElementById("resposta");
 const senha = document.getElementById("senha");
 const admin = document.getElementById("admin");
@@ -127,10 +124,6 @@ btn.onclick = () => window.apagar(c.key);
 li.appendChild(btn);
 lista.appendChild(li);
 
-window.apagar = function (id) {
-  const db = getDatabase();
-  remove(ref(db, "convidados/" + id));
-};
 window.apagar = function (id) {
   const db = getDatabase();
   remove(ref(db, "convidados/" + id));
