@@ -1,1 +1,118 @@
-arquivo
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Guilherme • 15 Anos</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{
+margin:0;
+font-family:'Poppins',sans-serif;
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+.card{
+background:#fff;
+width:100%;
+max-width:420px;
+border-radius:20px;
+padding:30px;
+box-shadow:0 20px 40px rgba(0,0,0,.3);
+text-align:center;
+}
+input,select,button{
+width:100%;
+padding:12px;
+margin-top:10px;
+border-radius:10px;
+border:1px solid #ddd;
+font-size:15px;
+}
+button{
+background:#203a43;
+color:#fff;
+border:none;
+cursor:pointer;
+font-weight:600;
+}
+.admin{display:none;text-align:left}
+</style>
+</head>
+<body>
+
+<div class="card">
+<h1>🎉 Guilherme – 15 Anos 🎉</h1>
+
+<p>
+📅 <b>28 de dezembro</b><br>
+📍 Clube do Beto<br>
+📞 Dúvidas: <b>11 99188-9433</b>
+</p>
+
+<input id="nome" placeholder="Seu nome">
+<select id="resposta">
+<option value="">Confirmação</option>
+<option>Vou comparecer</option>
+<option>Não poderei ir</option>
+</select>
+
+<button onclick="confirmar()">Confirmar presença</button>
+
+<hr>
+
+<input id="senha" type="password" placeholder="Senha do admin">
+<button onclick="abrirAdmin()">Entrar como admin</button>
+
+<div class="admin" id="admin">
+<h3>Lista de convidados</h3>
+<ul id="lista"></ul>
+</div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAg421ivUVYIWikXKmUchs8KFiuKHmRcE4",
+  authDomain: "convite-guilherme.firebaseapp.com",
+  databaseURL: "https://convite-guilherme-default-rtdb.firebaseio.com",
+  projectId: "convite-guilherme",
+  storageBucket: "convite-guilherme.firebasestorage.app",
+  messagingSenderId: "967694475264",
+  appId: "1:967694475264:web:72078b694e3b0a1211f8e5"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const convidadosRef = ref(db, "convidados");
+
+window.confirmar = function(){
+  if(!nome.value || !resposta.value){
+    alert("Preencha tudo");
+    return;
+  }
+  push(convidadosRef, {
+    nome: nome.value,
+    resposta: resposta.value
+  });
+  nome.value="";
+  resposta.value="";
+  alert("Presença confirmada! 🎉");
+}
+
+window.abrirAdmin = function(){
+  if(senha.value === "gui15"){
+    admin.style.display="block";
+    onValue(convidadosRef, snap=>{
+      lista.innerHTML="";
+      snap.forEach(c=>{
+        let li=document.createElement("li");
+        li.innerHTML = `
+          ${c.val().nome} - ${c.val().resposta}
+          <button onclick="apagar('${c.key}')">❌</button>
+        `;
