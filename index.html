@@ -1,7 +1,8 @@
 <script type="module">
-import { getDatabase, ref, push, onValue, remove } 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
+// CONFIG FIREBASE
 const firebaseConfig = {
   apiKey: "AIzaSyAg421ivUVYIWikXKmUchs8KFiuKHmRcE4",
   authDomain: "convite-guilherme.firebaseapp.com",
@@ -12,22 +13,19 @@ const firebaseConfig = {
   appId: "1:967694475264:web:72078b694e3b0a1211f8e5"
 };
 
-// Firebase
+// INICIAR FIREBASE
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const convidadosRef = ref(db, "convidados");
-  import { initializeApp } 
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-
-// HTML
+// ELEMENTOS HTML
 const nome = document.getElementById("nome");
 const resposta = document.getElementById("resposta");
 const senha = document.getElementById("senha");
 const admin = document.getElementById("admin");
 const lista = document.getElementById("lista");
 
-// BOTÃO CONFIRMAR
+// CONFIRMAR PRESENÇA
 window.confirmar = function () {
   if (!nome.value || !resposta.value) {
     alert("Preencha tudo");
@@ -44,7 +42,7 @@ window.confirmar = function () {
   alert("Presença confirmada 🎉");
 };
 
-// LOGIN ADMIN
+// ABRIR ADMIN
 window.abrirAdmin = function () {
   if (senha.value !== "gui15") {
     alert("Senha incorreta");
@@ -54,14 +52,16 @@ window.abrirAdmin = function () {
   admin.style.display = "block";
   lista.innerHTML = "";
 
-  onValue(convidadosRef, (snap) => {
+  onValue(convidadosRef, (snapshot) => {
     lista.innerHTML = "";
-    snap.forEach((c) => {
+
+    snapshot.forEach((c) => {
       const li = document.createElement("li");
       li.textContent = `${c.val().nome} - ${c.val().resposta} `;
 
       const btn = document.createElement("button");
       btn.textContent = "❌";
+      btn.style.marginLeft = "10px";
       btn.onclick = () => apagar(c.key);
 
       li.appendChild(btn);
