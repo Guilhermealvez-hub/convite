@@ -1,71 +1,86 @@
-<script type="module">
-/* IMPORTS — SOMENTE AQUI */
-import { initializeApp } from "https://https://guilhermealvez-hub.github.io/convite/
-import { getDatabase, ref, push, onValue, remove } from "https://https://guilhermealvez-hub.github.io/convite/;
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Convite</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f0f0f0, #d0e0ff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
-/* CONFIG FIREBASE */
-const firebaseConfig = {
-  apiKey: "AIzaSyAg421ivUVYIWikXKmUchs8KFiuKHmRcE4",
-  authDomain: "https://convite-guilherme.firebaseapp.com",
-  databaseURL: "https://convite-guilherme-default-rtdb.firebaseio.com",
-  projectId: "convite-guilherme",
-  storageBucket: "convite-guilherme.firebasestorage.app",
-  messagingSenderId: "967694475264",
-  appId: "1:967694475264:web:72078b694e3b0a1211f8e5"
-};
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            text-align: center;
+            width: 300px;
+        }
 
-/* FIREBASE */
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-const convidadosRef = ref(db, "convidados");
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
 
-/* ELEMENTOS */
-const nome = document.getElementById("nome");
-const resposta = document.getElementById("resposta");
-const senha = document.getElementById("senha");
-const admin = document.getElementById("admin");
-const lista = document.getElementById("lista");
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 8px;
+            background-color: #007BFF;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-/* CONFIRMAR */
-window.confirmar = function () {
-  if (!nome.value || !resposta.value) {
-    alert("Preencha tudo");
-    return;
-  }
+        button:hover {
+            background-color: #0056b3;
+        }
 
-  push(convidadosRef, {
-    nome: nome.value,
-    resposta: resposta.value
-  });
+        .admin-btn {
+            background-color: #28a745;
+        }
 
-  nome.value = "";
-  resposta.value = "";
-  alert("Presença confirmada 🎉");
-};
+        .admin-btn:hover {
+            background-color: #1e7e34;
+        }
+    </style>
+</head>
+<body>
 
-/* ADMIN */
-window.abrirAdmin = function () {
-  if (senha.value !== "gui15") {
-    alert("Senha incorreta");
-    return;
-  }
+    <div class="container">
+        <h1>Convite Especial</h1>
+        <p>Bem-vindo ao nosso site de convite!</p>
 
-  admin.style.display = "block";
+        <button id="btnConfirmar">Confirmar Presença</button>
+        <button id="btnAdmin" class="admin-btn">Área do Admin</button>
+    </div>
 
-  onValue(convidadosRef, (snapshot) => {
-    lista.innerHTML = "";
+    <script>
+        // Função Confirmar
+        function confirmar() {
+            alert("Presença confirmada! Obrigado!");
+        }
 
-    snapshot.forEach((c) => {
-      const li = document.createElement("li");
-      li.textContent = `${c.val().nome} - ${c.val().resposta} `;
+        // Função Abrir Admin
+        function abrirAdmin() {
+            alert("Bem-vindo à área do administrador!");
+            // Se quiser redirecionar, descomente a linha abaixo
+            // window.location.href = "admin.html";
+        }
 
-      const btn = document.createElement("button");
-      btn.textContent = "❌";
-      btn.onclick = () => remove(ref(db, "convidados/" + c.key));
+        // Associando funções aos botões
+        document.getElementById("btnConfirmar").addEventListener("click", confirmar);
+        document.getElementById("btnAdmin").addEventListener("click", abrirAdmin);
+    </script>
 
-      li.appendChild(btn);
-      lista.appendChild(li);
-    });
-  });
-};
-</script>
+</body>
+</html>
