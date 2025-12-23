@@ -117,13 +117,16 @@ window.openAdmin = function () {
   if(senha.value === "gui15"){
     admin.style.display="block";
     onValue(convidadosRef, snap=>{
-      lista.innerHTML="";
-      snap.forEach(c=>{
-        let li=document.createElement("li");
-        li.innerHTML = `
-          ${c.val().nome} - ${c.val().resposta}
-          <button onclick="apagar('${c.key}')">❌</button>
-        `;
+      const li = document.createElement("li");
+li.textContent = `${c.val().nome} - ${c.val().resposta} `;
+
+const btn = document.createElement("button");
+btn.textContent = "❌";
+btn.onclick = () => window.apagar(c.key);
+
+li.appendChild(btn);
+lista.appendChild(li);
+
 window.apagar = function (id) {
   const db = getDatabase();
   remove(ref(db, "convidados/" + id));
